@@ -1,0 +1,9 @@
+﻿services:
+  car-rental-system.web:
+    image: car-rental-system.web
+    ports:
+      - "8080:8080"
+      - "8081:8081"
+    build:
+      context: .
+      dockerfile: CarRentalSystem.Web/Dockerfile
