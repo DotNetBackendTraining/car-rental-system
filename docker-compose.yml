@@ -7,3 +7,18 @@
     build:
       context: .
       dockerfile: CarRentalSystem.Web/Dockerfile
+    environment:
+      - ConnectionStrings__AppDbContextConnection=Server=sqlserver;Database=master;User Id=sa;Password=YourStrong!Passw0rd;TrustServerCertificate=True;
+
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    environment:
+      - SA_PASSWORD=YourStrong!Passw0rd
+      - ACCEPT_EULA=Y
+    ports:
+      - "1455:1433"
+    volumes:
+      - sqlserver-data:/var/opt/mssql
+
+volumes:
+  sqlserver-data:
