@@ -7,6 +7,9 @@
     build:
       context: .
       dockerfile: CarRentalSystem.Web/Dockerfile
+    depends_on:
+      sqlserver:
+        condition: service_started
     environment:
       - ConnectionStrings__AppDbContextConnection=Server=sqlserver;Database=master;User Id=sa;Password=YourStrong!Passw0rd;TrustServerCertificate=True;
 
