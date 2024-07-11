@@ -1,5 +1,5 @@
 @{
-    ViewData["Title"] = "Car Rental System - Register";
+    ViewData["Title"] = "Register";
 }
 
 @model CarRentalSystem.Web.ViewModels.SignUpViewModel
@@ -22,6 +22,33 @@
 
     .form-group {
         margin-bottom: 20px;
+    }
+
+    .password-strength {
+        margin-top: 5px;
+        font-size: 0.875rem;
+        display: flex;
+        visibility: hidden;
+    }
+
+    .password-strength span {
+        display: inline-block;
+        width: 20%;
+        height: 5px;
+        background-color: #e0e0e0;
+        margin-right: 2px;
+    }
+
+    .password-strength .strength-weak {
+        background-color: #c34040;
+    }
+
+    .password-strength .strength-medium {
+        background-color: #d3d334;
+    }
+
+    .password-strength .strength-strong {
+        background-color: #34ba34;
     }
 </style>
 <div class="container mt-5">
@@ -87,8 +114,11 @@
             <div class="col-md-6 mb-3">
                 <div class="form-group">
                     <label asp-for="Password">Password</label>
-                    <input asp-for="Password" class="form-control" type="password"/>
+                    <input asp-for="Password" class="form-control" type="password" id="password"/>
                     <span asp-validation-for="Password" class="text-danger"></span>
+                    <div id="password-strength" class="password-strength">
+                        <span></span><span></span><span></span><span></span><span></span>
+                    </div>
                 </div>
             </div>
             <div class="col-md-6 mb-3">
@@ -139,7 +169,8 @@
                 </div>
                 <div class="form-group">
                     <label asp-for="Country"></label>
-                    <select asp-for="Country" class="form-control" asp-items="@(new SelectList(ViewData["Countries"] as List<string>))">
+                    <select asp-for="Country" class="form-control"
+                            asp-items="@(new SelectList(ViewData["Countries"] as List<string>))">
                         <option value="">Select a country</option>
                     </select>
                     <span asp-validation-for="Country" class="text-danger"></span>
@@ -157,4 +188,52 @@
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial"/>
+    <script>
+    $(document).ready(function () {
+        $.validator.addMethod("passwordStrength", function (value, element) {
+            return this.optional(element) || /[A-Z]/.test(value) && /[a-z]/.test(value) && /\d/.test(value) && /\W/.test(value);
+        }, "Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character.");
+
+        $("#password").rules("add", {
+            required: true,
+            minlength: 6,
+            passwordStrength: true,
+            messages: {
+                required: "Password is required.",
+                minlength: "Password must be at least 6 characters long.",
+                passwordStrength: "Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character."
+            }
+        });
+
+        $('#password').on('input', function () {
+            const password = $(this).val();
+            let strength = 0;
+            const passwordStrength = $('#password-strength');
+
+            if (password.length > 0) {
+                passwordStrength.css('visibility', 'visible');
+            } else {
+                passwordStrength.css('visibility', 'hidden');
+            }
+
+            if (password.length >= 6) strength++;
+            if (/[A-Z]/.test(password)) strength++;
+            if (/[a-z]/.test(password)) strength++;
+            if (/\d/.test(password)) strength++;
+            if (/\W/.test(password)) strength++;
+
+            const spans = passwordStrength.find('span');
+            spans.removeClass('strength-weak strength-medium strength-strong');
+            for (let i = 0; i < strength; i++) {
+                if (strength <= 2) {
+                    spans.eq(i).addClass('strength-weak');
+                } else if (strength <= 4) {
+                    spans.eq(i).addClass('strength-medium');
+                } else {
+                    spans.eq(i).addClass('strength-strong');
+                }
+            }
+        });
+    });
+</script>
 }
