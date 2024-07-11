@@ -1,5 +1,6 @@
 using CarRentalSystem.Web.Data;
 using CarRentalSystem.Web.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace CarRentalSystem.Web.DependencyInjection;
@@ -14,7 +15,8 @@ public static class DatabaseServiceCollectionExtension
         services.AddDbContext<AppDbContext>(options =>
             options.UseSqlServer(connectionString));
 
-        services.AddDefaultIdentity<ApplicationUser>()
-            .AddEntityFrameworkStores<AppDbContext>();
+        services.AddIdentity<ApplicationUser, IdentityRole>(options => options.User.RequireUniqueEmail = true)
+            .AddEntityFrameworkStores<AppDbContext>()
+            .AddUserValidator<CustomUserValidator<ApplicationUser>>();
     }
 }
