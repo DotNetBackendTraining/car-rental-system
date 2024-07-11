@@ -131,8 +131,10 @@
                     <span asp-validation-for="City" class="text-danger"></span>
                 </div>
                 <div class="form-group">
-                    <label asp-for="Country">Country</label>
-                    <input asp-for="Country" class="form-control"/>
+                    <label asp-for="Country"></label>
+                    <select asp-for="Country" class="form-control" asp-items="@(new SelectList(ViewData["Countries"] as List<string>))">
+                        <option value="">Select a country</option>
+                    </select>
                     <span asp-validation-for="Country" class="text-danger"></span>
                 </div>
             </div>

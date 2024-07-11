@@ -1,11 +1,16 @@
+using CarRentalSystem.Web.Interfaces;
 using FluentValidation;
 
 namespace CarRentalSystem.Web.ViewModels.Validators;
 
 public class SignUpViewModelValidator : AbstractValidator<SignUpViewModel>
 {
-    public SignUpViewModelValidator()
+    private readonly ICountryService _countryService;
+
+    public SignUpViewModelValidator(ICountryService countryService)
     {
+        _countryService = countryService;
+
         RuleFor(x => x.FirstName)
             .NotEmpty().WithMessage("First Name is required.")
             .MaximumLength(50).WithMessage("First Name cannot be longer than 50 characters.");
@@ -42,10 +47,16 @@ public class SignUpViewModelValidator : AbstractValidator<SignUpViewModel>
 
         RuleFor(x => x.Country)
             .NotEmpty().WithMessage("Country is required.")
-            .MaximumLength(50).WithMessage("Country cannot be longer than 50 characters.");
+            .MaximumLength(50).WithMessage("Country cannot be longer than 50 characters.")
+            .Must(BeAValidCountry).WithMessage("Invalid country selected.");
 
         RuleFor(x => x.DriversLicenseNumber)
             .NotEmpty().WithMessage("Driver's License Number is required.")
             .MaximumLength(20).WithMessage("Driver's License Number cannot be longer than 20 characters.");
+    }
+
+    private bool BeAValidCountry(string country)
+    {
+        return _countryService.IsValidCountry(country);
     }
 }

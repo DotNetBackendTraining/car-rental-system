@@ -1,9 +1,11 @@
 using AutoMapper;
 using CarRentalSystem.Web.Filters;
+using CarRentalSystem.Web.Interfaces;
 using CarRentalSystem.Web.Models;
 using CarRentalSystem.Web.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace CarRentalSystem.Web.Controllers;
 
@@ -12,15 +14,24 @@ public class AccountController : Controller
     private readonly UserManager<ApplicationUser> _userManager;
     private readonly SignInManager<ApplicationUser> _signInManager;
     private readonly IMapper _mapper;
+    private readonly ICountryService _countryService;
 
     public AccountController(
         UserManager<ApplicationUser> userManager,
         SignInManager<ApplicationUser> signInManager,
-        IMapper mapper)
+        IMapper mapper,
+        ICountryService countryService)
     {
         _userManager = userManager;
         _signInManager = signInManager;
         _mapper = mapper;
+        _countryService = countryService;
+    }
+
+    public override void OnActionExecuting(ActionExecutingContext context)
+    {
+        base.OnActionExecuting(context);
+        ViewData["Countries"] = _countryService.GetAllCountries();
     }
 
     [HttpGet]
