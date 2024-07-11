@@ -1,6 +1,6 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
-using CarRentalSystem.Web.Models;
+using CarRentalSystem.Web.ViewModels;
 
 namespace CarRentalSystem.Web.Controllers;
 
