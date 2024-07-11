@@ -15,7 +15,8 @@ public class ValidationFilter<T> : IAsyncActionFilter where T : class
 
     public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
     {
-        if (context.ActionArguments.TryGetValue("model", out var value) && value is T model)
+        var argument = context.ActionArguments.Values.FirstOrDefault(argument => argument is T);
+        if (argument is T model)
         {
             var validationResult = await _validator.ValidateAsync(model);
             if (!validationResult.IsValid)
