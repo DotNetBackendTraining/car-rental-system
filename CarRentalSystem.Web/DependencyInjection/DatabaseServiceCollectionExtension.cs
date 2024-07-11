@@ -1,4 +1,5 @@
 using CarRentalSystem.Web.Data;
+using CarRentalSystem.Web.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace CarRentalSystem.Web.DependencyInjection;
@@ -12,5 +13,8 @@ public static class DatabaseServiceCollectionExtension
 
         services.AddDbContext<AppDbContext>(options =>
             options.UseSqlServer(connectionString));
+
+        services.AddDefaultIdentity<ApplicationUser>()
+            .AddEntityFrameworkStores<AppDbContext>();
     }
 }
