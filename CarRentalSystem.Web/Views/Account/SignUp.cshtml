@@ -19,8 +19,11 @@
     .hero p {
         font-size: 1.2rem;
     }
-</style>
 
+    .form-group {
+        margin-bottom: 20px;
+    }
+</style>
 <div class="container mt-5">
     <div class="hero text-center">
         <h2>Welcome to Our Car Rental Service!</h2>
@@ -53,7 +56,9 @@
                     <label asp-for="UserName">Username</label>
                     <input asp-for="UserName" class="form-control"/>
                     <small class="form-text text-muted">Your unique username to use for logging in.</small>
-                    <span asp-validation-for="UserName" class="text-danger"></span>
+                    <div class="text-danger">
+                        <span asp-validation-for="UserName"></span>
+                    </div>
                 </div>
             </div>
         </div>
@@ -64,7 +69,9 @@
                     <label asp-for="Email">Email</label>
                     <input asp-for="Email" class="form-control"/>
                     <small class="form-text text-muted">We'll never share your email with anyone else.</small>
-                    <span asp-validation-for="Email" class="text-danger"></span>
+                    <div class="text-danger">
+                        <span asp-validation-for="Email"></span>
+                    </div>
                 </div>
             </div>
             <div class="col-md-6 mb-3">
@@ -140,7 +147,11 @@
             </div>
         </div>
 
-        <button type="submit" class="btn btn-primary">Register</button>
+        <div class="row">
+            <div class="col-md-12 text-center mb-3">
+                <button type="submit" class="btn btn-primary">Register</button>
+            </div>
+        </div>
     </form>
 </div>
 
