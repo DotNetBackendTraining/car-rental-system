@@ -12,4 +12,6 @@ public class ApplicationUser : IdentityUser
     public string City { get; set; } = string.Empty;
     public string Country { get; set; } = string.Empty;
     public string DriversLicenseNumber { get; set; } = string.Empty;
+
+    public ICollection<Reservation> Reservations { get; set; } = [];
 }

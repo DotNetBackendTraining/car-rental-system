@@ -6,6 +6,9 @@ namespace CarRentalSystem.Web.Data;
 
 public class AppDbContext : IdentityDbContext<ApplicationUser>
 {
+    public DbSet<Car> Cars { get; set; }
+    public DbSet<Reservation> Reservations { get; set; }
+
     public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
     {
     }
@@ -48,6 +51,46 @@ public class AppDbContext : IdentityDbContext<ApplicationUser>
 
             entity.HasIndex(e => e.Email).IsUnique();
             entity.HasIndex(e => e.PhoneNumber).IsUnique();
+        });
+
+        builder.Entity<Car>(entity =>
+        {
+            entity.Property(e => e.Make)
+                .IsRequired()
+                .HasMaxLength(50);
+
+            entity.Property(e => e.Model)
+                .IsRequired()
+                .HasMaxLength(50);
+
+            entity.Property(e => e.Year)
+                .IsRequired();
+
+            entity.Property(e => e.Location)
+                .IsRequired()
+                .HasMaxLength(100);
+
+            entity.Property(e => e.ImageName)
+                .HasMaxLength(256);
+
+            entity.HasData(SeedData.GetCarsList());
+        });
+
+        builder.Entity<Reservation>(entity =>
+        {
+            entity.Property(e => e.StartDate)
+                .IsRequired();
+
+            entity.Property(e => e.EndDate)
+                .IsRequired();
+
+            entity.HasOne(r => r.Car)
+                .WithMany(c => c.Reservations)
+                .HasForeignKey(r => r.CarId);
+
+            entity.HasOne(r => r.User)
+                .WithMany(u => u.Reservations)
+                .HasForeignKey(r => r.UserId);
         });
     }
 }
