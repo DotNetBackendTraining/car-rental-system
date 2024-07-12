@@ -2,28 +2,9 @@
     ViewData["Title"] = "Register";
 }
 
-@model CarRentalSystem.Web.ViewModels.SignUpViewModel
+@model SignUpViewModel
 
 <style>
-    .hero {
-        background-color: #f8f9fa;
-        border-bottom: 1px solid #e0e0e0;
-        padding: 40px 0;
-        margin-bottom: 30px;
-    }
-
-    .hero h2 {
-        font-size: 2.5rem;
-    }
-
-    .hero p {
-        font-size: 1.2rem;
-    }
-
-    .form-group {
-        margin-bottom: 20px;
-    }
-
     .password-strength {
         margin-top: 5px;
         font-size: 0.875rem;
@@ -82,7 +63,7 @@
                 <div class="form-group">
                     <label asp-for="UserName">Username</label>
                     <input asp-for="UserName" class="form-control"/>
-                    <small class="form-text text-muted">Your unique username to use for logging in.</small>
+                    <small class="form-text text-muted">Your unique username to display on your profile.</small>
                     <div class="text-danger">
                         <span asp-validation-for="UserName"></span>
                     </div>
@@ -94,7 +75,7 @@
             <div class="col-md-6 mb-3">
                 <div class="form-group">
                     <label asp-for="Email">Email</label>
-                    <input asp-for="Email" class="form-control"/>
+                    <input asp-for="Email" class="form-control" type="email"/>
                     <small class="form-text text-muted">We'll never share your email with anyone else.</small>
                     <div class="text-danger">
                         <span asp-validation-for="Email"></span>
