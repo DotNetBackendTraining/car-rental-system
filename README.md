@@ -2,8 +2,11 @@
 
 ## **Development**
 
-- To run the database separately (without starting the program) use the following
-  command: ```shell docker-compose up sqlserver```
+- To run the database separately (without starting the program) use the following command:
+    ```shell
+    docker-compose up sqlserver
+    ```
+
 - The program ensures the database is created and migrated automatically. But if you want to migrate it manually run the
   database separately first. The right connection string can be found in the `appsettings.json` file.
 
