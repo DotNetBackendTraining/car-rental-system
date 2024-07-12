@@ -35,15 +35,15 @@ public class AccountController : Controller
     }
 
     [HttpGet]
-    public IActionResult SignUp()
+    public IActionResult Register()
     {
         return View();
     }
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    [ServiceFilter(typeof(ValidationFilter<SignUpViewModel>))]
-    public async Task<IActionResult> SignUp(SignUpViewModel model)
+    [ServiceFilter(typeof(ValidationFilter<RegisterViewModel>))]
+    public async Task<IActionResult> Register(RegisterViewModel model)
     {
         if (!ModelState.IsValid)
         {

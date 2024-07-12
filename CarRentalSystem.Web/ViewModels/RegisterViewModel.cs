@@ -1,6 +1,6 @@
 namespace CarRentalSystem.Web.ViewModels;
 
-public class SignUpViewModel : UserBaseViewModel
+public class RegisterViewModel : UserBaseViewModel
 {
     public string FirstName { get; set; } = string.Empty;
     public string LastName { get; set; } = string.Empty;

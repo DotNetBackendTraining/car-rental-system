@@ -11,7 +11,7 @@ public static class PresentationServiceCollectionExtension
     public static void AddPresentationServices(this IServiceCollection services)
     {
         services.AddAutoMapper(Assembly.GetAssembly(typeof(ApplicationUserProfile)));
-        services.AddValidatorsFromAssemblyContaining<SignUpViewModelValidator>();
+        services.AddValidatorsFromAssemblyContaining<RegisterViewModelValidator>();
         services.AddScoped(typeof(ValidationFilter<>));
         services.AddRazorPages();
         services.AddControllersWithViews();

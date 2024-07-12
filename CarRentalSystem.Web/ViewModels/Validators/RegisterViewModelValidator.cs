@@ -3,11 +3,11 @@ using FluentValidation;
 
 namespace CarRentalSystem.Web.ViewModels.Validators;
 
-public class SignUpViewModelValidator : UserBaseViewModelValidator<SignUpViewModel>
+public class RegisterViewModelValidator : UserBaseViewModelValidator<RegisterViewModel>
 {
     private readonly ICountryService _countryService;
 
-    public SignUpViewModelValidator(ICountryService countryService)
+    public RegisterViewModelValidator(ICountryService countryService)
     {
         _countryService = countryService;
 

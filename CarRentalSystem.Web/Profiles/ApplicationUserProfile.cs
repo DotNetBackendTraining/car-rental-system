@@ -8,6 +8,6 @@ public class ApplicationUserProfile : Profile
 {
     public ApplicationUserProfile()
     {
-        CreateMap<SignUpViewModel, ApplicationUser>();
+        CreateMap<RegisterViewModel, ApplicationUser>();
     }
 }

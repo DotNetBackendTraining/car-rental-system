@@ -2,7 +2,7 @@
     ViewData["Title"] = "Register";
 }
 
-@model SignUpViewModel
+@model RegisterViewModel
 
 <style>
     .password-strength {
@@ -38,7 +38,7 @@
         <p>Please fill out the form below to create your account and start booking cars easily.</p>
     </div>
 
-    <form asp-action="SignUp" method="post">
+    <form asp-action="Register" method="post">
         <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
 
         <div class="row">
