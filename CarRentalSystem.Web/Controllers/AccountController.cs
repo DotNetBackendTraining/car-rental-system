@@ -41,6 +41,7 @@ public class AccountController : Controller
     }
 
     [HttpPost]
+    [ValidateAntiForgeryToken]
     [ServiceFilter(typeof(ValidationFilter<SignUpViewModel>))]
     public async Task<IActionResult> SignUp(SignUpViewModel model)
     {
@@ -63,6 +64,44 @@ public class AccountController : Controller
             ModelState.AddModelError(string.Empty, error.Description);
         }
 
+        return View(model);
+    }
+
+    [HttpGet]
+    public IActionResult Login()
+    {
+        return View();
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    [ServiceFilter(typeof(ValidationFilter<LoginViewModel>))]
+    public async Task<IActionResult> Login(LoginViewModel model)
+    {
+        if (!ModelState.IsValid)
+        {
+            return View(model);
+        }
+
+        var user = await _userManager.FindByEmailAsync(model.Email);
+        if (user == null)
+        {
+            ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+            return View(model);
+        }
+
+        var result = await _signInManager.PasswordSignInAsync(
+            user.UserName!,
+            model.Password,
+            model.RememberMe,
+            lockoutOnFailure: false);
+
+        if (result.Succeeded)
+        {
+            return RedirectToAction("Index", "Home");
+        }
+
+        ModelState.AddModelError(string.Empty, "Invalid login attempt.");
         return View(model);
     }
 }
