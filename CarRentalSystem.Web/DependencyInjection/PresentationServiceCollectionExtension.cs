@@ -11,9 +11,20 @@ public static class PresentationServiceCollectionExtension
     public static void AddPresentationServices(this IServiceCollection services)
     {
         services.AddAutoMapper(Assembly.GetAssembly(typeof(ApplicationUserProfile)));
+
         services.AddValidatorsFromAssemblyContaining<RegisterViewModelValidator>();
         services.AddScoped(typeof(ValidationFilter<>));
+
         services.AddRazorPages();
         services.AddControllersWithViews();
+
+        services.ConfigureApplicationCookie(options =>
+        {
+            options.Cookie.HttpOnly = true;
+            options.ExpireTimeSpan = TimeSpan.FromDays(7);
+            options.LoginPath = "/Account/Login";
+            options.LogoutPath = "/Account/Logout";
+            options.SlidingExpiration = true;
+        });
     }
 }
