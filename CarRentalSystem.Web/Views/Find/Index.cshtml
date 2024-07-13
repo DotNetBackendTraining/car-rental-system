@@ -1,0 +1,14 @@
+@{
+    ViewData["Title"] = "Find a Car";
+}
+
+<div class="hero bg-light text-center py-5">
+    <div class="container">
+        <h1 class="display-4 font-weight-bold">Find Your Perfect Car</h1>
+        <p class="lead">Search and book the car that fits your need.</p>
+    </div>
+</div>
+
+<div class="container my-5">
+    <component type="typeof(CarRentalSystem.Web.Components.Find.CarProfiles)" render-mode="Server"/>
+</div>
