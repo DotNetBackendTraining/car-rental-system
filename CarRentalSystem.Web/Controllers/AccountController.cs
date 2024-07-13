@@ -15,17 +15,20 @@ public class AccountController : Controller
     private readonly SignInManager<ApplicationUser> _signInManager;
     private readonly IMapper _mapper;
     private readonly ICountryService _countryService;
+    private readonly INotificationService _notificationService;
 
     public AccountController(
         UserManager<ApplicationUser> userManager,
         SignInManager<ApplicationUser> signInManager,
         IMapper mapper,
-        ICountryService countryService)
+        ICountryService countryService,
+        INotificationService notificationService)
     {
         _userManager = userManager;
         _signInManager = signInManager;
         _mapper = mapper;
         _countryService = countryService;
+        _notificationService = notificationService;
     }
 
     public override void OnActionExecuting(ActionExecutingContext context)
@@ -56,6 +59,11 @@ public class AccountController : Controller
         if (result.Succeeded)
         {
             await _signInManager.SignInAsync(user, isPersistent: false);
+
+            _notificationService.AddNotification(
+                "You've been successfully registered! Log into your account to continue.",
+                NotificationType.Success);
+
             return RedirectToAction("Index", "Home");
         }
 
@@ -98,6 +106,7 @@ public class AccountController : Controller
 
         if (result.Succeeded)
         {
+            _notificationService.AddNotification("Login successful!", NotificationType.Success);
             return RedirectToAction("Index", "Home");
         }
 
@@ -110,6 +119,7 @@ public class AccountController : Controller
     public async Task<IActionResult> Logout()
     {
         await _signInManager.SignOutAsync();
+        _notificationService.AddNotification("You've been logged out", NotificationType.Info);
         return RedirectToAction("Index", "Home");
     }
 }
