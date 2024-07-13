@@ -106,8 +106,10 @@ public class AccountController : Controller
 
         if (result.Succeeded)
         {
-            _notificationService.AddNotification("Login successful!", NotificationType.Success);
-            return RedirectToAction("Index", "Home");
+            _notificationService.AddNotification(
+                "Login successful. Feel free to search for your right car!",
+                NotificationType.Success);
+            return RedirectToAction("Index", "Find");
         }
 
         ModelState.AddModelError(string.Empty, "Invalid login attempt.");
