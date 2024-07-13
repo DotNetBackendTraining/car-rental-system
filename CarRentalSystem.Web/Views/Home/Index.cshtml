@@ -1,8 +1,59 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Home";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="hero bg-light text-center py-5">
+    <div class="container">
+        <h1 class="display-4 font-weight-bold">Welcome to the Car Rental System</h1>
+        <p class="lead">Your one-stop solution for renting cars conveniently and reliably.</p>
+        <a class="btn btn-primary btn-lg mx-2" asp-controller="Account" asp-action="Register">Register</a>
+        <a class="btn btn-outline-primary btn-lg mx-2" asp-controller="Account" asp-action="Login">Login</a>
+    </div>
+</div>
+
+<div class="container mt-5">
+    <div class="row text-center">
+        <div class="col-md-4 mb-4">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body">
+                    <h2 class="card-title h4">Wide Range of Cars</h2>
+                    <p class="card-text">Choose from a variety of cars to suit your needs, from economy to luxury models.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body">
+                    <h2 class="card-title h4">Affordable Prices</h2>
+                    <p class="card-text">We offer competitive pricing and special deals to ensure you get the best value.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body">
+                    <h2 class="card-title h4">Excellent Service</h2>
+                    <p class="card-text">Experience top-notch customer service with our 24/7 support and easy booking process.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container my-5">
+    <div class="row align-items-center">
+        <div class="col-lg-6">
+            <h2>Why Choose Us?</h2>
+            <p>We are dedicated to providing the best car rental experience. Our platform offers a seamless booking process, a wide selection of vehicles, and customer support available at all times.</p>
+            <ul class="list-unstyled">
+                <li><i class="bi bi-check-circle-fill text-primary"></i> Extensive range of vehicles</li>
+                <li><i class="bi bi-check-circle-fill text-primary"></i> Easy online booking</li>
+                <li><i class="bi bi-check-circle-fill text-primary"></i> Competitive pricing</li>
+                <li><i class="bi bi-check-circle-fill text-primary"></i> 24/7 customer support</li>
+            </ul>
+        </div>
+        <div class="col-lg-6 text-center">
+            <img src="~/assets/images/cars/2k55x9_1280x960-min.png" class="img-fluid rounded" alt="Car Rental">
+        </div>
+    </div>
 </div>
