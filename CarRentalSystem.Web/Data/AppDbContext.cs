@@ -35,6 +35,7 @@ public class AppDbContext : IdentityDbContext<ApplicationUser>
                 .HasMaxLength(100);
 
             entity.Property(e => e.AddressLine2)
+                .IsRequired(false)
                 .HasMaxLength(100);
 
             entity.Property(e => e.City)
