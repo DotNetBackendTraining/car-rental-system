@@ -1,6 +1,8 @@
 using System.Reflection;
 using CarRentalSystem.Web.Filters;
+using CarRentalSystem.Web.Interfaces;
 using CarRentalSystem.Web.Profiles;
+using CarRentalSystem.Web.Services;
 using CarRentalSystem.Web.ViewModels.Validators;
 using FluentValidation;
 
@@ -15,8 +17,15 @@ public static class PresentationServiceCollectionExtension
         services.AddValidatorsFromAssemblyContaining<RegisterViewModelValidator>();
         services.AddScoped(typeof(ValidationFilter<>));
 
+        services.AddScoped<INotificationService, NotificationService>();
+
+        services.AddDistributedMemoryCache();
+        services.AddSession();
+        services.AddHttpContextAccessor();
+        services.AddControllersWithViews()
+            .AddSessionStateTempDataProvider();
+
         services.AddRazorPages();
-        services.AddControllersWithViews();
         services.AddRazorComponents()
             .AddInteractiveServerComponents()
             .AddCircuitOptions(opt => opt.DetailedErrors = true);

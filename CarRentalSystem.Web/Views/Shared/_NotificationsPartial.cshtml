@@ -1,0 +1,49 @@
+@using CarRentalSystem.Web.Interfaces
+@inject INotificationService NotificationService
+
+@{
+    var notifications = NotificationService.GetNotifications().ToList();
+
+    string GetIconClass(NotificationType type)
+    {
+        return type switch
+        {
+            NotificationType.Success => "bi-check-circle-fill",
+            NotificationType.Error => "bi-x-circle-fill",
+            NotificationType.Info => "bi-info-circle-fill",
+            NotificationType.Warning => "bi-exclamation-triangle-fill",
+            _ => "bi-bell-fill"
+        };
+    }
+}
+
+@if (notifications.Any())
+{
+    <div class="modal fade" id="notificationModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-body text-center p-4">
+                    @foreach (var notification in notifications)
+                    {
+                        <div class="d-flex flex-column align-items-center">
+                            <i class="@GetIconClass(notification.Type) bi-lg my-2" style="font-size: 2rem;"></i>
+                            <span class="text-message" style="font-size: 1.25rem;">@notification.Message</span>
+                        </div>
+                    }
+                </div>
+                <div class="modal-footer justify-content-center">
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const notificationModal = new bootstrap.Modal(document.getElementById('notificationModal'));
+            notificationModal.show();
+        });
+    </script>
+
+    NotificationService.ClearNotifications();
+}
