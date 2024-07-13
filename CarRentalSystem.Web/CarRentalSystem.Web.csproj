@@ -25,4 +25,10 @@
       <PackageReference Include="Nager.Country" Version="4.0.0" />
     </ItemGroup>
 
+    <ItemGroup>
+      <AdditionalFiles Include="Components\App.razor" />
+      <AdditionalFiles Include="Components\Routes.razor" />
+      <AdditionalFiles Include="Components\_Imports.razor" />
+    </ItemGroup>
+
 </Project>

@@ -17,6 +17,9 @@ public static class PresentationServiceCollectionExtension
 
         services.AddRazorPages();
         services.AddControllersWithViews();
+        services.AddRazorComponents()
+            .AddInteractiveServerComponents()
+            .AddCircuitOptions(opt => opt.DetailedErrors = true);
 
         services.ConfigureApplicationCookie(options =>
         {
