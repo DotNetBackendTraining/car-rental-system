@@ -1,6 +1,7 @@
+using CarRentalSystem.Web.Models;
 using Microsoft.AspNetCore.Identity;
 
-namespace CarRentalSystem.Web.Models;
+namespace CarRentalSystem.Web.Data.Entities;
 
 public class ApplicationUser : IdentityUser
 {

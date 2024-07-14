@@ -1,4 +1,5 @@
 using AutoMapper;
+using CarRentalSystem.Web.Data.Entities;
 using CarRentalSystem.Web.Filters;
 using CarRentalSystem.Web.Interfaces;
 using CarRentalSystem.Web.Models;

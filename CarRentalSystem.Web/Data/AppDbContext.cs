@@ -1,4 +1,4 @@
-using CarRentalSystem.Web.Models;
+using CarRentalSystem.Web.Data.Entities;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 

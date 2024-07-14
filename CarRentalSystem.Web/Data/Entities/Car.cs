@@ -1,4 +1,4 @@
-namespace CarRentalSystem.Web.Models;
+namespace CarRentalSystem.Web.Data.Entities;
 
 public class Car
 {

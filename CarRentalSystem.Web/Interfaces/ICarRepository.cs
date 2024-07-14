@@ -1,4 +1,4 @@
-using CarRentalSystem.Web.Models;
+using CarRentalSystem.Web.Data.Entities;
 
 namespace CarRentalSystem.Web.Interfaces;
 
