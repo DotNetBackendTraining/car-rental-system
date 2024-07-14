@@ -12,11 +12,8 @@ public class CustomUserValidator<TUser> : UserValidator<TUser> where TUser : App
 
     public override async Task<IdentityResult> ValidateAsync(UserManager<TUser> manager, TUser user)
     {
-        var result = await base.ValidateAsync(manager, user);
-        var errors = result.Succeeded ? [] : result.Errors.ToList();
-
+        var errors = new List<IdentityError>();
         await ValidatePhoneNumber(manager, user, errors);
-
         return errors.Count > 0 ? IdentityResult.Failed(errors.ToArray()) : IdentityResult.Success;
     }
 
