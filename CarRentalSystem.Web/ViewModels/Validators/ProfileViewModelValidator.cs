@@ -15,7 +15,7 @@ public class ProfileViewModelValidator<T> : UserBaseViewModelValidator<T>
 {
     private readonly ICountryService _countryService;
 
-    public ProfileViewModelValidator(ICountryService countryService)
+    protected ProfileViewModelValidator(ICountryService countryService)
     {
         _countryService = countryService;
 
@@ -28,10 +28,7 @@ public class ProfileViewModelValidator<T> : UserBaseViewModelValidator<T>
             .MaximumLength(50).WithMessage("Last Name cannot be longer than 50 characters.");
 
         RuleFor(x => x.Password)
-            .Matches("[A-Z]").WithMessage("Password must contain at least one uppercase letter.")
-            .Matches("[a-z]").WithMessage("Password must contain at least one lowercase letter.")
-            .Matches("[0-9]").WithMessage("Password must contain at least one number.")
-            .Matches("[^a-zA-Z0-9]").WithMessage("Password must contain at least one special character.");
+            .StrongPassword();
 
         RuleFor(x => x.PhoneNumber)
             .NotEmpty().WithMessage("Phone Number is required.")
