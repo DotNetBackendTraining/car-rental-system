@@ -1,10 +1,9 @@
-using CarRentalSystem.Core;
 using CarRentalSystem.Core.Entities;
 using CarRentalSystem.Core.Interfaces;
 using CarRentalSystem.Core.Specification;
 using Microsoft.EntityFrameworkCore;
 
-namespace CarRentalSystem.Web.Repositories;
+namespace CarRentalSystem.Core.Repositories;
 
 public class CarRepository : ICarRepository
 {
