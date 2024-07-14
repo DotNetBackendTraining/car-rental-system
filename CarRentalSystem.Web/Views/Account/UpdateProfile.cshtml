@@ -1,20 +1,20 @@
 @{
-    ViewData["Title"] = "Register";
+    ViewData["Title"] = "Profile";
 }
 
-@model RegisterViewModel
+@model ProfileViewModel
 
 <div class="container mt-5">
     <div class="hero text-center">
-        <h2>Welcome to Our Car Rental Service!</h2>
-        <p>Please fill out the form below to create your account and start booking cars easily.</p>
+        <h2>Your Profile</h2>
+        <p>Update your profile information below.</p>
     </div>
-    <form asp-action="Register" method="post">
+    <form asp-action="UpdateProfile" method="post">
         <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
         <partial name="_ProfileFormPartial" model="@Model"/>
         <div class="row">
             <div class="col-md-12 text-center mb-3">
-                <button type="submit" class="btn btn-primary">Register</button>
+                <button type="submit" class="btn btn-primary">Save Changes</button>
             </div>
         </div>
     </form>

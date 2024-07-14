@@ -9,5 +9,8 @@ public class ApplicationUserProfile : Profile
     public ApplicationUserProfile()
     {
         CreateMap<RegisterViewModel, ApplicationUser>();
+
+        CreateMap<ApplicationUser, ProfileViewModel>();
+        CreateMap<ProfileViewModel, ApplicationUser>();
     }
 }
