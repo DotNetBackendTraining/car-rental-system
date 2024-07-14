@@ -1,4 +1,5 @@
 using AutoMapper;
+using CarRentalSystem.Web.Data.Specification;
 using CarRentalSystem.Web.Interfaces;
 using CarRentalSystem.Web.ViewModels;
 
@@ -18,9 +19,9 @@ public class CarService : ICarService
     }
 
     // TODO: fix this n+1 queries logic
-    public async Task<List<CarProfileViewModel>> GetCarProfilesAsync(int page, int pageSize, DateTime date)
+    public async Task<List<CarProfileViewModel>> GetCarProfilesAsync(CarQuerySpecification specification, DateTime date)
     {
-        var cars = await _carRepository.GetCarsAsync(page, pageSize);
+        var cars = await _carRepository.GetCarsAsync(specification);
 
         var carProfiles = new List<CarProfileViewModel>();
         foreach (var c in cars)

@@ -1,3 +1,4 @@
+using CarRentalSystem.Web.Data.Specification;
 using CarRentalSystem.Web.Interfaces;
 using CarRentalSystem.Web.ViewModels;
 using Microsoft.AspNetCore.Components;
@@ -23,7 +24,12 @@ public partial class CarProfiles : ComponentBase
 
     private async Task LoadCarProfiles()
     {
-        _carProfiles = await CarService.GetCarProfilesAsync(_currentPage, PageSize, _selectedDate);
+        var querySpecification = new CarQuerySpecification
+        {
+            Page = _currentPage,
+            PageSize = PageSize
+        };
+        _carProfiles = await CarService.GetCarProfilesAsync(querySpecification, _selectedDate);
         _canNavigateForward = _carProfiles.Count == PageSize;
     }
 

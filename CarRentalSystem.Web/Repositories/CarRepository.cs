@@ -1,5 +1,6 @@
 using CarRentalSystem.Web.Data;
 using CarRentalSystem.Web.Data.Entities;
+using CarRentalSystem.Web.Data.Specification;
 using CarRentalSystem.Web.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
@@ -14,11 +15,11 @@ public class CarRepository : ICarRepository
         _context = context;
     }
 
-    public async Task<List<Car>> GetCarsAsync(int page, int pageSize)
+    public async Task<List<Car>> GetCarsAsync(CarQuerySpecification specification)
     {
         return await _context.Cars
-            .Skip((page - 1) * pageSize)
-            .Take(pageSize)
+            .Skip((specification.Page - 1) * specification.PageSize)
+            .Take(specification.PageSize)
             .ToListAsync();
     }
 
