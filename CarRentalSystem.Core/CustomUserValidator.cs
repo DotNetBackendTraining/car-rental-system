@@ -1,8 +1,8 @@
-using CarRentalSystem.Web.Data.Entities;
+using CarRentalSystem.Core.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
-namespace CarRentalSystem.Web.Data;
+namespace CarRentalSystem.Core;
 
 public class CustomUserValidator<TUser> : UserValidator<TUser> where TUser : ApplicationUser
 {

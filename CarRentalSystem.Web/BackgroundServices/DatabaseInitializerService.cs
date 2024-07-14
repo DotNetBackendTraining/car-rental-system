@@ -1,4 +1,4 @@
-using CarRentalSystem.Web.Data;
+using CarRentalSystem.Core;
 using Microsoft.EntityFrameworkCore;
 
 namespace CarRentalSystem.Web.BackgroundServices;

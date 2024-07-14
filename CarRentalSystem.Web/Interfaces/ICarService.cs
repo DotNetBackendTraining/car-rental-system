@@ -1,4 +1,4 @@
-using CarRentalSystem.Web.Data.Specification;
+using CarRentalSystem.Core.Specification;
 using CarRentalSystem.Web.ViewModels;
 
 namespace CarRentalSystem.Web.Interfaces;

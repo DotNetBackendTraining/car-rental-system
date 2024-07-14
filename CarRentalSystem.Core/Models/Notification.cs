@@ -1,4 +1,4 @@
-namespace CarRentalSystem.Web.Models;
+namespace CarRentalSystem.Core.Models;
 
 public class Notification
 {

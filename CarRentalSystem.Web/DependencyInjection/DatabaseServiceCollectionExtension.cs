@@ -1,5 +1,5 @@
-using CarRentalSystem.Web.Data;
-using CarRentalSystem.Web.Data.Entities;
+using CarRentalSystem.Core;
+using CarRentalSystem.Core.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 

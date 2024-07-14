@@ -1,5 +1,5 @@
 using AutoMapper;
-using CarRentalSystem.Web.Data.Entities;
+using CarRentalSystem.Core.Entities;
 using CarRentalSystem.Web.ViewModels;
 
 namespace CarRentalSystem.Web.Profiles;

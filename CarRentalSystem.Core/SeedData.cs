@@ -1,6 +1,6 @@
-using CarRentalSystem.Web.Data.Entities;
+using CarRentalSystem.Core.Entities;
 
-namespace CarRentalSystem.Web.Data;
+namespace CarRentalSystem.Core;
 
 public static class SeedData
 {

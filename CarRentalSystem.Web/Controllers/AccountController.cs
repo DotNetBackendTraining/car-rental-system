@@ -1,8 +1,8 @@
 using AutoMapper;
-using CarRentalSystem.Web.Data.Entities;
+using CarRentalSystem.Core.Entities;
+using CarRentalSystem.Core.Interfaces;
+using CarRentalSystem.Core.Models;
 using CarRentalSystem.Web.Filters;
-using CarRentalSystem.Web.Interfaces;
-using CarRentalSystem.Web.Models;
 using CarRentalSystem.Web.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;

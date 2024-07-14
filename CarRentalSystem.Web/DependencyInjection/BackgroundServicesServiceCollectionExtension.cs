@@ -1,5 +1,5 @@
+using CarRentalSystem.Core.Interfaces;
 using CarRentalSystem.Web.BackgroundServices;
-using CarRentalSystem.Web.Interfaces;
 
 namespace CarRentalSystem.Web.DependencyInjection;
 

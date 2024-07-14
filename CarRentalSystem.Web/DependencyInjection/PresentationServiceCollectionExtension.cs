@@ -1,6 +1,6 @@
 using System.Reflection;
+using CarRentalSystem.Core.Interfaces;
 using CarRentalSystem.Web.Filters;
-using CarRentalSystem.Web.Interfaces;
 using CarRentalSystem.Web.Profiles;
 using CarRentalSystem.Web.Services;
 using CarRentalSystem.Web.ViewModels.Validators;

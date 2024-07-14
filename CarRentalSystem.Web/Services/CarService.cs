@@ -1,5 +1,6 @@
 using AutoMapper;
-using CarRentalSystem.Web.Data.Specification;
+using CarRentalSystem.Core.Interfaces;
+using CarRentalSystem.Core.Specification;
 using CarRentalSystem.Web.Interfaces;
 using CarRentalSystem.Web.ViewModels;
 

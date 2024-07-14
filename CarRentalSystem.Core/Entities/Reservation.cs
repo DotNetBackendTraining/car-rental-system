@@ -1,4 +1,4 @@
-namespace CarRentalSystem.Web.Data.Entities;
+namespace CarRentalSystem.Core.Entities;
 
 public class Reservation
 {

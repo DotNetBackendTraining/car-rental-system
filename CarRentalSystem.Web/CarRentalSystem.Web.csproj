@@ -16,12 +16,6 @@
     <ItemGroup>
       <PackageReference Include="AutoMapper" Version="13.0.1" />
       <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.9.2" />
-      <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.6" />
-      <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.7" />
-      <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.6">
-        <PrivateAssets>all</PrivateAssets>
-        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-      </PackageReference>
       <PackageReference Include="Nager.Country" Version="4.0.0" />
     </ItemGroup>
 
@@ -29,6 +23,10 @@
       <AdditionalFiles Include="Components\App.razor" />
       <AdditionalFiles Include="Components\Routes.razor" />
       <AdditionalFiles Include="Components\_Imports.razor" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\CarRentalSystem.Core\CarRentalSystem.Core.csproj" />
     </ItemGroup>
 
 </Project>

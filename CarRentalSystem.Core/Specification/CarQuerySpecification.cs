@@ -1,4 +1,4 @@
-namespace CarRentalSystem.Web.Data.Specification;
+namespace CarRentalSystem.Core.Specification;
 
 public class CarQuerySpecification : QuerySpecification
 {

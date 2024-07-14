@@ -1,6 +1,7 @@
 using System.Text.Json;
+using CarRentalSystem.Core.Interfaces;
+using CarRentalSystem.Core.Models;
 using CarRentalSystem.Web.Interfaces;
-using CarRentalSystem.Web.Models;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 
 namespace CarRentalSystem.Web.Services;

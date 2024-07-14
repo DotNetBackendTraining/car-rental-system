@@ -1,7 +1,7 @@
-using CarRentalSystem.Web.Data;
-using CarRentalSystem.Web.Data.Entities;
-using CarRentalSystem.Web.Data.Specification;
-using CarRentalSystem.Web.Interfaces;
+using CarRentalSystem.Core;
+using CarRentalSystem.Core.Entities;
+using CarRentalSystem.Core.Interfaces;
+using CarRentalSystem.Core.Specification;
 using Microsoft.EntityFrameworkCore;
 
 namespace CarRentalSystem.Web.Repositories;

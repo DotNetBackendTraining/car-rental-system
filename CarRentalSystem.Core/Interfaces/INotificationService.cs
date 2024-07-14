@@ -1,6 +1,6 @@
-using CarRentalSystem.Web.Models;
+using CarRentalSystem.Core.Models;
 
-namespace CarRentalSystem.Web.Interfaces;
+namespace CarRentalSystem.Core.Interfaces;
 
 public interface INotificationService
 {

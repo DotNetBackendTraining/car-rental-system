@@ -1,7 +1,7 @@
-using CarRentalSystem.Web.Data.Entities;
-using CarRentalSystem.Web.Data.Specification;
+using CarRentalSystem.Core.Entities;
+using CarRentalSystem.Core.Specification;
 
-namespace CarRentalSystem.Web.Interfaces;
+namespace CarRentalSystem.Core.Interfaces;
 
 public interface ICarRepository
 {

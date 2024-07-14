@@ -1,4 +1,4 @@
-namespace CarRentalSystem.Web.Interfaces;
+namespace CarRentalSystem.Core.Interfaces;
 
 public interface ICountryService
 {

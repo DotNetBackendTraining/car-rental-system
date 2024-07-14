@@ -1,4 +1,4 @@
-using CarRentalSystem.Web.Interfaces;
+using CarRentalSystem.Core.Interfaces;
 using FluentValidation;
 
 namespace CarRentalSystem.Web.ViewModels.Validators;
