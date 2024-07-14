@@ -4,12 +4,12 @@ using Microsoft.AspNetCore.Identity;
 
 namespace CarRentalSystem.Web.Services;
 
-public class UserService : IUserService
+public class UserAccessorService : IUserAccessorService
 {
     private readonly UserManager<ApplicationUser> _userManager;
     private readonly IHttpContextAccessor _httpContextAccessor;
 
-    public UserService(
+    public UserAccessorService(
         IHttpContextAccessor httpContextAccessor,
         UserManager<ApplicationUser> userManager)
     {

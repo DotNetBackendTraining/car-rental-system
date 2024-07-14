@@ -14,25 +14,25 @@ public class AccountService : IAccountService
     private readonly SignInManager<ApplicationUser> _signInManager;
     private readonly IMapper _mapper;
     private readonly INotificationService _notificationService;
-    private readonly IUserService _userService;
+    private readonly IUserAccessorService _userAccessorService;
 
     public AccountService(
         UserManager<ApplicationUser> userManager,
         SignInManager<ApplicationUser> signInManager,
         IMapper mapper,
         INotificationService notificationService,
-        IUserService userService)
+        IUserAccessorService userAccessorService)
     {
         _userManager = userManager;
         _signInManager = signInManager;
         _mapper = mapper;
         _notificationService = notificationService;
-        _userService = userService;
+        _userAccessorService = userAccessorService;
     }
 
     public async Task<ProfileViewModel> GetCurrentUserProfileAsync()
     {
-        var user = await _userService.GetCurrentUserAsync();
+        var user = await _userAccessorService.GetCurrentUserAsync();
         return _mapper.Map<ProfileViewModel>(user);
     }
 
@@ -56,7 +56,7 @@ public class AccountService : IAccountService
 
     public async Task<IdentityResult> UpdateCurrentUserProfileAsync(ProfileViewModel model)
     {
-        var user = await _userService.GetCurrentUserAsync();
+        var user = await _userAccessorService.GetCurrentUserAsync();
         if (user == null)
         {
             return IdentityResult.Failed(new IdentityError { Description = "User not found." });

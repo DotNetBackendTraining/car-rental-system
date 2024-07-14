@@ -2,7 +2,7 @@ using CarRentalSystem.Core.Entities;
 
 namespace CarRentalSystem.Web.Interfaces;
 
-public interface IUserService
+public interface IUserAccessorService
 {
     Task<ApplicationUser?> GetCurrentUserAsync();
 }

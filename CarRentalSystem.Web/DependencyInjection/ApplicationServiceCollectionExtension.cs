@@ -15,6 +15,6 @@ public static class ApplicationServiceCollection
         services.AddScoped<IAccountService, AccountService>();
         services.Decorate<IAccountService, AccountServiceLoggingDecorator>();
 
-        services.AddScoped<IUserService, UserService>();
+        services.AddScoped<IUserAccessorService, UserAccessorService>();
     }
 }
