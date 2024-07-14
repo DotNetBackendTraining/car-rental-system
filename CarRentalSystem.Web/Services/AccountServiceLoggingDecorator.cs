@@ -79,4 +79,20 @@ public class AccountServiceLoggingDecorator : IAccountService
         await _service.LogoutUserAsync();
         _logger.LogInformation("User logged out successfully.");
     }
+
+    public async Task<IdentityResult> ConfirmEmailAsync(string userId, string token)
+    {
+        _logger.LogInformation("Confirming email for user ID: {UserId}", userId);
+        var result = await _service.ConfirmEmailAsync(userId, token);
+        if (result.Succeeded)
+        {
+            _logger.LogInformation("Email confirmed successfully for user ID: {UserId}", userId);
+        }
+        else
+        {
+            _logger.LogWarning("Email confirmation failed for user ID: {UserId}", userId);
+        }
+
+        return result;
+    }
 }

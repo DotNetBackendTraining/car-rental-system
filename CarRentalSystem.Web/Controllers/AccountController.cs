@@ -123,4 +123,21 @@ public class AccountController : Controller
 
         return View(model);
     }
+
+    [HttpGet]
+    public async Task<IActionResult> ConfirmEmail(string userId, string token)
+    {
+        if (string.IsNullOrEmpty(userId) || string.IsNullOrEmpty(token))
+        {
+            return RedirectToAction("Index", "Home");
+        }
+
+        var result = await _accountService.ConfirmEmailAsync(userId, token);
+        if (result.Succeeded)
+        {
+            return RedirectToAction("Index", "Home");
+        }
+
+        return View("Error");
+    }
 }
