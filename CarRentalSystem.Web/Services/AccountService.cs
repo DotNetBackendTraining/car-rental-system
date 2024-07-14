@@ -14,17 +14,26 @@ public class AccountService : IAccountService
     private readonly SignInManager<ApplicationUser> _signInManager;
     private readonly IMapper _mapper;
     private readonly INotificationService _notificationService;
+    private readonly IUserService _userService;
 
     public AccountService(
         UserManager<ApplicationUser> userManager,
         SignInManager<ApplicationUser> signInManager,
         IMapper mapper,
-        INotificationService notificationService)
+        INotificationService notificationService,
+        IUserService userService)
     {
         _userManager = userManager;
         _signInManager = signInManager;
         _mapper = mapper;
         _notificationService = notificationService;
+        _userService = userService;
+    }
+
+    public async Task<ProfileViewModel> GetCurrentUserProfileAsync()
+    {
+        var user = await _userService.GetCurrentUserAsync();
+        return _mapper.Map<ProfileViewModel>(user);
     }
 
     public async Task<IdentityResult> RegisterUserAsync(RegisterViewModel model)
@@ -41,6 +50,24 @@ public class AccountService : IAccountService
         _notificationService.AddNotification(
             "You've been successfully registered! Log into your account to continue.",
             NotificationType.Success);
+
+        return result;
+    }
+
+    public async Task<IdentityResult> UpdateCurrentUserProfileAsync(ProfileViewModel model)
+    {
+        var user = await _userService.GetCurrentUserAsync();
+        if (user == null)
+        {
+            return IdentityResult.Failed(new IdentityError { Description = "User not found." });
+        }
+
+        _mapper.Map(model, user);
+        var result = await _userManager.UpdateAsync(user);
+        if (result.Succeeded)
+        {
+            _notificationService.AddNotification("Profile updated successfully.", NotificationType.Success);
+        }
 
         return result;
     }
