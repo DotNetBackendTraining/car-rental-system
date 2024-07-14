@@ -62,4 +62,38 @@ public class UserRegistrationService : IUserRegistrationService
 
         return result;
     }
+
+    public async Task<IdentityResult> ResetUserPasswordAsync(ResetPasswordViewModel model)
+    {
+        var user = await _userManager.FindByIdAsync(model.UserId);
+        if (user == null)
+        {
+            return IdentityResult.Failed(new IdentityError { Description = "User not found." });
+        }
+
+        var result = await _userManager.ResetPasswordAsync(user, model.Token, model.Password);
+        if (result.Succeeded)
+        {
+            _notificationService.AddNotification(
+                "Your password has been reset successfully.",
+                NotificationType.Success);
+        }
+
+        return result;
+    }
+
+    public async Task InitiateUserPasswordResetAsync(ForgotPasswordViewModel model)
+    {
+        var user = await _userManager.FindByEmailAsync(model.Email);
+        if (user == null)
+        {
+            _notificationService.AddNotification(
+                "User with the given email address does not exist.",
+                NotificationType.Error);
+            return;
+        }
+
+        await _emailConfirmationService.SendPasswordResetEmailAsync(user);
+        _notificationService.AddNotification("Password reset email has been sent.", NotificationType.Info);
+    }
 }

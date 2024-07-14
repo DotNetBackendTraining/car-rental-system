@@ -5,4 +5,5 @@ namespace CarRentalSystem.Web.Interfaces;
 public interface IEmailConfirmationService
 {
     Task SendConfirmationEmailAsync(ApplicationUser user);
+    Task SendPasswordResetEmailAsync(ApplicationUser user);
 }
