@@ -2,7 +2,8 @@ using FluentValidation;
 
 namespace CarRentalSystem.Web.ViewModels.Validators;
 
-public abstract class UserBaseViewModelValidator<T> : AbstractValidator<T> where T : UserBaseViewModel
+public abstract class UserBaseViewModelValidator<T> : PasswordFieldViewModelValidator<T>
+    where T : UserBaseViewModel
 {
     protected UserBaseViewModelValidator()
     {
