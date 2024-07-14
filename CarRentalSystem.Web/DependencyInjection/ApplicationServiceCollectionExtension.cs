@@ -15,10 +15,10 @@ public static class ApplicationServiceCollection
 
         services.AddScoped<IAccountService, AccountService>();
         services.Decorate<IAccountService, AccountServiceLoggingDecorator>();
-
         services.AddScoped<IUserAccessorService, UserAccessorService>();
 
         services.Configure<SmtpSettings>(configuration.GetSection("SmtpSettings"));
         services.AddScoped<IEmailSender, EmailSender>();
+        services.AddScoped<IEmailConfirmationService, EmailConfirmationService>();
     }
 }

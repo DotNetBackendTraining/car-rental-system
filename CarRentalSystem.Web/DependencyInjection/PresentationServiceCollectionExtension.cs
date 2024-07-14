@@ -5,6 +5,7 @@ using CarRentalSystem.Web.Profiles;
 using CarRentalSystem.Web.Services;
 using CarRentalSystem.Web.ViewModels.Validators;
 using FluentValidation;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
 
 namespace CarRentalSystem.Web.DependencyInjection;
 
@@ -18,6 +19,7 @@ public static class PresentationServiceCollectionExtension
         services.AddScoped(typeof(ValidationFilter<>));
 
         services.AddScoped<INotificationService, NotificationService>();
+        services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
 
         services.AddDistributedMemoryCache();
         services.AddSession();

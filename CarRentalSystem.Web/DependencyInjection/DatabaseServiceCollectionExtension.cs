@@ -15,8 +15,13 @@ public static class DatabaseServiceCollectionExtension
         services.AddDbContext<AppDbContext>(options =>
             options.UseSqlServer(connectionString));
 
-        services.AddIdentity<ApplicationUser, IdentityRole>(options => options.User.RequireUniqueEmail = true)
+        services.AddIdentity<ApplicationUser, IdentityRole>(options =>
+            {
+                options.Tokens.EmailConfirmationTokenProvider = "Default";
+                options.User.RequireUniqueEmail = true;
+            })
             .AddEntityFrameworkStores<AppDbContext>()
-            .AddUserValidator<CustomUserValidator<ApplicationUser>>();
+            .AddUserValidator<CustomUserValidator<ApplicationUser>>()
+            .AddDefaultTokenProviders();
     }
 }
