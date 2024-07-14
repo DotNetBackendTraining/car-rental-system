@@ -25,9 +25,6 @@ public class RegisterViewModelValidator : UserBaseViewModelValidator<RegisterVie
             .Matches("[0-9]").WithMessage("Password must contain at least one number.")
             .Matches("[^a-zA-Z0-9]").WithMessage("Password must contain at least one special character.");
 
-        RuleFor(x => x.ConfirmPassword)
-            .Equal(x => x.Password).WithMessage("Password and Confirm Password do not match.");
-
         RuleFor(x => x.PhoneNumber)
             .NotEmpty().WithMessage("Phone Number is required.")
             .Matches(@"^\d{10}$").WithMessage("Phone Number must be 10 digits.");
