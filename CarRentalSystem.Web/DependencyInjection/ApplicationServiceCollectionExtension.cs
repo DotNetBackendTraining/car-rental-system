@@ -13,9 +13,10 @@ public static class ApplicationServiceCollection
         services.AddScoped<ICarRepository, CarRepository>();
         services.AddScoped<ICarService, CarService>();
 
-        services.AddScoped<IAccountService, AccountService>();
-        services.Decorate<IAccountService, AccountServiceLoggingDecorator>();
         services.AddScoped<IUserAccessorService, UserAccessorService>();
+        services.AddScoped<IUserLoginService, UserLoginService>();
+        services.AddScoped<IUserProfileService, UserProfileService>();
+        services.AddScoped<IUserRegistrationService, UserRegistrationService>();
 
         services.Configure<SmtpSettings>(configuration.GetSection("SmtpSettings"));
         services.AddScoped<IEmailSender, EmailSender>();

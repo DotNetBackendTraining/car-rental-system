@@ -11,14 +11,20 @@ namespace CarRentalSystem.Web.Controllers;
 public class AccountController : Controller
 {
     private readonly ICountryService _countryService;
-    private readonly IAccountService _accountService;
+    private readonly IUserLoginService _userLoginService;
+    private readonly IUserProfileService _userProfileService;
+    private readonly IUserRegistrationService _userRegistrationService;
 
     public AccountController(
         ICountryService countryService,
-        IAccountService accountService)
+        IUserLoginService userLoginService,
+        IUserProfileService userProfileService,
+        IUserRegistrationService userRegistrationService)
     {
         _countryService = countryService;
-        _accountService = accountService;
+        _userLoginService = userLoginService;
+        _userProfileService = userProfileService;
+        _userRegistrationService = userRegistrationService;
     }
 
     public override void OnActionExecuting(ActionExecutingContext context)
@@ -43,7 +49,7 @@ public class AccountController : Controller
             return View(model);
         }
 
-        var result = await _accountService.RegisterUserAsync(model);
+        var result = await _userRegistrationService.RegisterUserAsync(model);
         if (result.Succeeded)
         {
             return RedirectToAction("Index", "Home");
@@ -73,7 +79,7 @@ public class AccountController : Controller
             return View(model);
         }
 
-        var result = await _accountService.LoginUserAsync(model);
+        var result = await _userLoginService.LoginUserAsync(model);
         if (result.Succeeded)
         {
             return RedirectToAction("Index", "Find");
@@ -87,7 +93,7 @@ public class AccountController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Logout()
     {
-        await _accountService.LogoutUserAsync();
+        await _userLoginService.LogoutUserAsync();
         return RedirectToAction("Index", "Home");
     }
 
@@ -95,7 +101,7 @@ public class AccountController : Controller
     [Authorize]
     public async Task<IActionResult> UpdateProfile()
     {
-        var userProfile = await _accountService.GetCurrentUserProfileAsync();
+        var userProfile = await _userProfileService.GetCurrentUserProfileAsync();
         return View(userProfile);
     }
 
@@ -110,7 +116,7 @@ public class AccountController : Controller
             return View(model);
         }
 
-        var result = await _accountService.UpdateCurrentUserProfileAsync(model);
+        var result = await _userProfileService.UpdateCurrentUserProfileAsync(model);
         if (result.Succeeded)
         {
             return RedirectToAction("UpdateProfile", "Account");
@@ -132,7 +138,7 @@ public class AccountController : Controller
             return RedirectToAction("Index", "Home");
         }
 
-        var result = await _accountService.ConfirmEmailAsync(userId, token);
+        var result = await _userRegistrationService.ConfirmUserEmailAsync(userId, token);
         if (result.Succeeded)
         {
             return RedirectToAction("Index", "Home");
