@@ -11,5 +11,6 @@ public static class ApplicationServiceCollection
     {
         services.AddScoped<ICarRepository, CarRepository>();
         services.AddScoped<ICarService, CarService>();
+        services.AddScoped<IAccountService, AccountService>();
     }
 }

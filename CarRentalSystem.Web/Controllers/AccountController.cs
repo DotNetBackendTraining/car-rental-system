@@ -1,10 +1,7 @@
-using AutoMapper;
-using CarRentalSystem.Core.Entities;
 using CarRentalSystem.Core.Interfaces;
-using CarRentalSystem.Core.Models;
 using CarRentalSystem.Web.Filters;
+using CarRentalSystem.Web.Interfaces;
 using CarRentalSystem.Web.ViewModels;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
@@ -12,24 +9,15 @@ namespace CarRentalSystem.Web.Controllers;
 
 public class AccountController : Controller
 {
-    private readonly UserManager<ApplicationUser> _userManager;
-    private readonly SignInManager<ApplicationUser> _signInManager;
-    private readonly IMapper _mapper;
     private readonly ICountryService _countryService;
-    private readonly INotificationService _notificationService;
+    private readonly IAccountService _accountService;
 
     public AccountController(
-        UserManager<ApplicationUser> userManager,
-        SignInManager<ApplicationUser> signInManager,
-        IMapper mapper,
         ICountryService countryService,
-        INotificationService notificationService)
+        IAccountService accountService)
     {
-        _userManager = userManager;
-        _signInManager = signInManager;
-        _mapper = mapper;
         _countryService = countryService;
-        _notificationService = notificationService;
+        _accountService = accountService;
     }
 
     public override void OnActionExecuting(ActionExecutingContext context)
@@ -54,17 +42,9 @@ public class AccountController : Controller
             return View(model);
         }
 
-        var user = _mapper.Map<ApplicationUser>(model);
-
-        var result = await _userManager.CreateAsync(user, model.Password);
+        var result = await _accountService.RegisterUserAsync(model);
         if (result.Succeeded)
         {
-            await _signInManager.SignInAsync(user, isPersistent: false);
-
-            _notificationService.AddNotification(
-                "You've been successfully registered! Log into your account to continue.",
-                NotificationType.Success);
-
             return RedirectToAction("Index", "Home");
         }
 
@@ -92,24 +72,9 @@ public class AccountController : Controller
             return View(model);
         }
 
-        var user = await _userManager.FindByEmailAsync(model.Email);
-        if (user == null)
-        {
-            ModelState.AddModelError(string.Empty, "Invalid login attempt.");
-            return View(model);
-        }
-
-        var result = await _signInManager.PasswordSignInAsync(
-            user.UserName!,
-            model.Password,
-            model.RememberMe,
-            lockoutOnFailure: false);
-
+        var result = await _accountService.LoginUserAsync(model);
         if (result.Succeeded)
         {
-            _notificationService.AddNotification(
-                "Login successful. Feel free to search for your right car!",
-                NotificationType.Success);
             return RedirectToAction("Index", "Find");
         }
 
@@ -121,8 +86,7 @@ public class AccountController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Logout()
     {
-        await _signInManager.SignOutAsync();
-        _notificationService.AddNotification("You've been logged out", NotificationType.Info);
+        await _accountService.LogoutUserAsync();
         return RedirectToAction("Index", "Home");
     }
 }
