@@ -12,6 +12,7 @@ public partial class CarProfiles : ComponentBase
     [Inject] private ICarService CarService { get; set; } = default!;
 
     private List<CarProfileViewModel> _carProfiles = [];
+    private string _searchLocation = string.Empty;
     private DateTime _selectedDate = DateTime.Today;
     private int _currentPage = 1;
     private bool CanNavigateBack => _currentPage > 1;
@@ -27,10 +28,20 @@ public partial class CarProfiles : ComponentBase
         var querySpecification = new CarQuerySpecification
         {
             Page = _currentPage,
-            PageSize = PageSize
+            PageSize = PageSize,
+            Location = _searchLocation
         };
         _carProfiles = await CarService.GetCarProfilesAsync(querySpecification, _selectedDate);
         _canNavigateForward = _carProfiles.Count == PageSize;
+    }
+
+    private async Task ChangeSearchLocation(ChangeEventArgs e)
+    {
+        if (e.Value is not null)
+        {
+            _searchLocation = e.Value!.ToString();
+            await LoadCarProfiles();
+        }
     }
 
     private async Task ChangeSelectedDate(ChangeEventArgs e)

@@ -17,7 +17,15 @@ public class CarRepository : ICarRepository
 
     public async Task<List<Car>> GetCarsAsync(CarQuerySpecification specification)
     {
-        return await _context.Cars
+        IQueryable<Car> query = _context.Cars;
+
+        if (!string.IsNullOrEmpty(specification.Location))
+        {
+            query = query.Where(c => c.Location.Contains(specification.Location));
+        }
+
+        return await query
+            .OrderBy(c => c.Model)
             .Skip((specification.Page - 1) * specification.PageSize)
             .Take(specification.PageSize)
             .ToListAsync();

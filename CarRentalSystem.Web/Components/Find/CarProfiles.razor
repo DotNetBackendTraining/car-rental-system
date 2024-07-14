@@ -1,4 +1,10 @@
 <div class="mb-3">
+    <label for="locationInput">Search by Location:</label>
+    <input type="text" id="locationInput" class="form-control"
+           value="@_searchLocation" @onchange="ChangeSearchLocation"/>
+</div>
+
+<div class="mb-3">
     <label for="datePicker">Select Date:</label>
     <input type="date" id="datePicker" class="form-control"
            value="@_selectedDate.ToString("yyyy-MM-dd")"
