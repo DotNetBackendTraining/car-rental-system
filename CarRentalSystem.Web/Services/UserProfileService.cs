@@ -1,9 +1,9 @@
 using AutoMapper;
 using CarRentalSystem.Core.Entities;
-using CarRentalSystem.Core.Interfaces;
 using CarRentalSystem.Core.Models;
 using CarRentalSystem.Web.Interfaces;
 using CarRentalSystem.Web.ViewModels;
+using MediatR;
 using Microsoft.AspNetCore.Identity;
 
 namespace CarRentalSystem.Web.Services;
@@ -11,21 +11,21 @@ namespace CarRentalSystem.Web.Services;
 public class UserProfileService : IUserProfileService
 {
     private readonly IMapper _mapper;
+    private readonly IMediator _mediator;
     private readonly UserManager<ApplicationUser> _userManager;
-    private readonly INotificationService _notificationService;
     private readonly IUserAccessorService _userAccessorService;
     private readonly IEmailConfirmationService _emailConfirmationService;
 
     public UserProfileService(
         IMapper mapper,
+        IMediator mediator,
         UserManager<ApplicationUser> userManager,
-        INotificationService notificationService,
         IUserAccessorService userAccessorService,
         IEmailConfirmationService emailConfirmationService)
     {
-        _userManager = userManager;
         _mapper = mapper;
-        _notificationService = notificationService;
+        _mediator = mediator;
+        _userManager = userManager;
         _userAccessorService = userAccessorService;
         _emailConfirmationService = emailConfirmationService;
     }
@@ -58,16 +58,23 @@ public class UserProfileService : IUserProfileService
             return result;
         }
 
-        _notificationService.AddNotification("Profile updated successfully.", NotificationType.Success);
+        await _mediator.Publish(new UserNotification
+        {
+            Message = "Profile updated successfully.",
+            Type = UserNotificationType.Success
+        });
+
         if (!emailChanged)
         {
             return result;
         }
 
         await _emailConfirmationService.SendConfirmationEmailAsync(user);
-        _notificationService.AddNotification(
-            "Please check your email to confirm your account.",
-            NotificationType.Warning);
+        await _mediator.Publish(new UserNotification
+        {
+            Message = "Please check your email to confirm your account.",
+            Type = UserNotificationType.Warning
+        });
 
         return result;
     }

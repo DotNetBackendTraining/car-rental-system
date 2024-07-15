@@ -1,8 +1,8 @@
 using CarRentalSystem.Core.Entities;
-using CarRentalSystem.Core.Interfaces;
 using CarRentalSystem.Core.Models;
 using CarRentalSystem.Web.Interfaces;
 using CarRentalSystem.Web.ViewModels;
+using MediatR;
 using Microsoft.AspNetCore.Identity;
 
 namespace CarRentalSystem.Web.Services;
@@ -11,16 +11,16 @@ public class UserLoginService : IUserLoginService
 {
     private readonly SignInManager<ApplicationUser> _signInManager;
     private readonly UserManager<ApplicationUser> _userManager;
-    private readonly INotificationService _notificationService;
+    private readonly IMediator _mediator;
 
     public UserLoginService(
         SignInManager<ApplicationUser> signInManager,
         UserManager<ApplicationUser> userManager,
-        INotificationService notificationService)
+        IMediator mediator)
     {
         _signInManager = signInManager;
         _userManager = userManager;
-        _notificationService = notificationService;
+        _mediator = mediator;
     }
 
     public async Task<SignInResult> LoginUserAsync(LoginViewModel model)
@@ -33,9 +33,11 @@ public class UserLoginService : IUserLoginService
 
         if (!await _userManager.IsEmailConfirmedAsync(user))
         {
-            _notificationService.AddNotification(
-                "Please confirm your email address before logging in.",
-                NotificationType.Warning);
+            await _mediator.Publish(new UserNotification
+            {
+                Message = "Please confirm your email address before logging in.",
+                Type = UserNotificationType.Warning
+            });
             return SignInResult.Failed;
         }
 
@@ -47,9 +49,11 @@ public class UserLoginService : IUserLoginService
 
         if (result.Succeeded)
         {
-            _notificationService.AddNotification(
-                "Login successful!",
-                NotificationType.Success);
+            await _mediator.Publish(new UserNotification
+            {
+                Message = "Login successful!",
+                Type = UserNotificationType.Success
+            });
         }
 
         return result;
@@ -58,6 +62,10 @@ public class UserLoginService : IUserLoginService
     public async Task LogoutUserAsync()
     {
         await _signInManager.SignOutAsync();
-        _notificationService.AddNotification("You've been logged out", NotificationType.Info);
+        await _mediator.Publish(new UserNotification
+        {
+            Message = "You've been logged out",
+            Type = UserNotificationType.Info
+        });
     }
 }

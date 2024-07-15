@@ -1,12 +1,14 @@
+using MediatR;
+
 namespace CarRentalSystem.Core.Models;
 
-public class Notification
+public class UserNotification : INotification
 {
     public string Message { get; set; } = string.Empty;
-    public NotificationType Type { get; set; }
+    public UserNotificationType Type { get; set; }
 }
 
-public enum NotificationType
+public enum UserNotificationType
 {
     Success,
     Error,

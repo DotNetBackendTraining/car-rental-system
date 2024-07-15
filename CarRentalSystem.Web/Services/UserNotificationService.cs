@@ -1,42 +1,46 @@
 using System.Text.Json;
 using CarRentalSystem.Core.Interfaces;
 using CarRentalSystem.Core.Models;
-using CarRentalSystem.Web.Interfaces;
+using MediatR;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 
 namespace CarRentalSystem.Web.Services;
 
-public class NotificationService : INotificationService
+public class UserNotificationService :
+    IUserNotificationService,
+    INotificationHandler<UserNotification>
 {
     private readonly ITempDataDictionary _tempData;
 
-    public NotificationService(
+    public UserNotificationService(
         ITempDataDictionaryFactory tempDataDictionaryFactory,
         IHttpContextAccessor httpContextAccessor)
     {
         _tempData = tempDataDictionaryFactory.GetTempData(httpContextAccessor.HttpContext);
     }
 
-    public void AddNotification(string message, NotificationType type)
+    public Task Handle(UserNotification notification, CancellationToken cancellationToken)
     {
-        var notifications = new List<Notification>();
+        var notifications = new List<UserNotification>();
         if (_tempData.TryGetValue("Notifications", out var value))
         {
-            notifications = JsonSerializer.Deserialize<List<Notification>>(value!.ToString());
+            notifications = JsonSerializer.Deserialize<List<UserNotification>>(value!.ToString());
         }
 
-        notifications!.Add(new Notification { Message = message, Type = type });
+        notifications!.Add(notification);
         _tempData["Notifications"] = JsonSerializer.Serialize(notifications);
+
+        return Task.CompletedTask;
     }
 
-    public IEnumerable<Notification> GetNotifications()
+    public IEnumerable<UserNotification> GetNotifications()
     {
         if (_tempData.TryGetValue("Notifications", out var value))
         {
-            return JsonSerializer.Deserialize<List<Notification>>(value!.ToString()) ?? [];
+            return JsonSerializer.Deserialize<List<UserNotification>>(value!.ToString()) ?? [];
         }
 
-        return new List<Notification>();
+        return new List<UserNotification>();
     }
 
     public void ClearNotifications()

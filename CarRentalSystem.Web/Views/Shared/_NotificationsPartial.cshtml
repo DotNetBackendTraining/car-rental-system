@@ -1,18 +1,18 @@
 @using CarRentalSystem.Core.Interfaces
 @using CarRentalSystem.Core.Models
-@inject INotificationService NotificationService
+@inject IUserNotificationService UserNotificationService
 
 @{
-    var notifications = NotificationService.GetNotifications().ToList();
+    var notifications = UserNotificationService.GetNotifications().ToList();
 
-    string GetIconClass(NotificationType type)
+    string GetIconClass(UserNotificationType type)
     {
         return type switch
         {
-            NotificationType.Success => "bi-check-circle-fill",
-            NotificationType.Error => "bi-x-circle-fill",
-            NotificationType.Info => "bi-info-circle-fill",
-            NotificationType.Warning => "bi-exclamation-triangle-fill",
+            UserNotificationType.Success => "bi-check-circle-fill",
+            UserNotificationType.Error => "bi-x-circle-fill",
+            UserNotificationType.Info => "bi-info-circle-fill",
+            UserNotificationType.Warning => "bi-exclamation-triangle-fill",
             _ => "bi-bell-fill"
         };
     }
@@ -46,5 +46,5 @@
         });
     </script>
 
-    NotificationService.ClearNotifications();
+    UserNotificationService.ClearNotifications();
 }

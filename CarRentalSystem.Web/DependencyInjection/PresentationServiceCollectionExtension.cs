@@ -1,5 +1,6 @@
 using System.Reflection;
 using CarRentalSystem.Core.Interfaces;
+using CarRentalSystem.Core.Models;
 using CarRentalSystem.Web.Filters;
 using CarRentalSystem.Web.Profiles;
 using CarRentalSystem.Web.Services;
@@ -15,10 +16,16 @@ public static class PresentationServiceCollectionExtension
     {
         services.AddAutoMapper(Assembly.GetAssembly(typeof(ApplicationUserProfile)));
 
+        services.AddMediatR(config =>
+        {
+            config.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly());
+            config.RegisterServicesFromAssemblyContaining<UserNotification>();
+        });
+
         services.AddValidatorsFromAssemblyContaining<RegisterViewModelValidator>();
         services.AddScoped(typeof(ValidationFilter<>));
 
-        services.AddScoped<INotificationService, NotificationService>();
+        services.AddScoped<IUserNotificationService, UserNotificationService>();
         services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
 
         services.AddDistributedMemoryCache();

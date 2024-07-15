@@ -1,9 +1,9 @@
 using AutoMapper;
 using CarRentalSystem.Core.Entities;
-using CarRentalSystem.Core.Interfaces;
 using CarRentalSystem.Core.Models;
 using CarRentalSystem.Web.Interfaces;
 using CarRentalSystem.Web.ViewModels;
+using MediatR;
 using Microsoft.AspNetCore.Identity;
 
 namespace CarRentalSystem.Web.Services;
@@ -11,19 +11,19 @@ namespace CarRentalSystem.Web.Services;
 public class UserRegistrationService : IUserRegistrationService
 {
     private readonly IMapper _mapper;
+    private readonly IMediator _mediator;
     private readonly UserManager<ApplicationUser> _userManager;
-    private readonly INotificationService _notificationService;
     private readonly IEmailConfirmationService _emailConfirmationService;
 
     public UserRegistrationService(
         IMapper mapper,
+        IMediator mediator,
         UserManager<ApplicationUser> userManager,
-        INotificationService notificationService,
         IEmailConfirmationService emailConfirmationService)
     {
-        _userManager = userManager;
         _mapper = mapper;
-        _notificationService = notificationService;
+        _mediator = mediator;
+        _userManager = userManager;
         _emailConfirmationService = emailConfirmationService;
     }
 
@@ -38,10 +38,11 @@ public class UserRegistrationService : IUserRegistrationService
         }
 
         await _emailConfirmationService.SendConfirmationEmailAsync(user);
-
-        _notificationService.AddNotification(
-            "Registration successful! Please check your email to confirm your account.",
-            NotificationType.Success);
+        await _mediator.Publish(new UserNotification
+        {
+            Message = "Registration successful! Please check your email to confirm your account.",
+            Type = UserNotificationType.Success
+        });
 
         return result;
     }
@@ -57,7 +58,11 @@ public class UserRegistrationService : IUserRegistrationService
         var result = await _userManager.ConfirmEmailAsync(user, token);
         if (result.Succeeded)
         {
-            _notificationService.AddNotification("Email confirmed successfully.", NotificationType.Success);
+            await _mediator.Publish(new UserNotification
+            {
+                Message = "Email confirmed successfully.",
+                Type = UserNotificationType.Success
+            });
         }
 
         return result;
@@ -74,9 +79,11 @@ public class UserRegistrationService : IUserRegistrationService
         var result = await _userManager.ResetPasswordAsync(user, model.Token, model.Password);
         if (result.Succeeded)
         {
-            _notificationService.AddNotification(
-                "Your password has been reset successfully.",
-                NotificationType.Success);
+            await _mediator.Publish(new UserNotification
+            {
+                Message = "Your password has been reset successfully.",
+                Type = UserNotificationType.Success
+            });
         }
 
         return result;
@@ -87,13 +94,19 @@ public class UserRegistrationService : IUserRegistrationService
         var user = await _userManager.FindByEmailAsync(model.Email);
         if (user == null)
         {
-            _notificationService.AddNotification(
-                "User with the given email address does not exist.",
-                NotificationType.Error);
+            await _mediator.Publish(new UserNotification
+            {
+                Message = "User with the given email address does not exist.",
+                Type = UserNotificationType.Error
+            });
             return;
         }
 
         await _emailConfirmationService.SendPasswordResetEmailAsync(user);
-        _notificationService.AddNotification("Password reset email has been sent.", NotificationType.Info);
+        await _mediator.Publish(new UserNotification
+        {
+            Message = "Password reset email has been sent.",
+            Type = UserNotificationType.Info
+        });
     }
 }
