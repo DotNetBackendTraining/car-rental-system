@@ -1,6 +1,6 @@
 using CarRentalSystem.Core.Entities;
 
-namespace CarRentalSystem.Web.Interfaces;
+namespace CarRentalSystem.Core.Interfaces;
 
 public interface IEmailConfirmationService
 {

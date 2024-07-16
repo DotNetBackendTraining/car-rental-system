@@ -1,4 +1,5 @@
 using CarRentalSystem.Core.Entities;
+using CarRentalSystem.Core.Interfaces;
 using CarRentalSystem.Web.Interfaces;
 using Microsoft.AspNetCore.Identity;
 

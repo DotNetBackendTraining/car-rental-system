@@ -1,5 +1,6 @@
 using System.Text.Encodings.Web;
 using CarRentalSystem.Core.Entities;
+using CarRentalSystem.Core.Interfaces;
 using CarRentalSystem.Web.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;

@@ -1,5 +1,6 @@
 using System.Net;
 using System.Net.Mail;
+using CarRentalSystem.Core.Interfaces;
 using CarRentalSystem.Web.Interfaces;
 using CarRentalSystem.Web.Settings;
 using Microsoft.Extensions.Options;
