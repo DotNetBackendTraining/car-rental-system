@@ -1,21 +1,15 @@
+using CarRentalSystem.Core.ApplicationUsers.ValidatorsExtension;
 using CarRentalSystem.Core.Interfaces;
 using FluentValidation;
 
-namespace CarRentalSystem.Web.ViewModels.Validators;
+namespace CarRentalSystem.Core.ApplicationUsers.Commands;
 
-public class ProfileViewModelValidator : ProfileViewModelValidator<ProfileViewModel>
-{
-    public ProfileViewModelValidator(ICountryService countryService) : base(countryService)
-    {
-    }
-}
-
-public class ProfileViewModelValidator<T> : UserBaseViewModelValidator<T>
-    where T : ProfileViewModel
+public class UserProfileAbstractValidator<T> : AbstractValidator<T>
+    where T : UserProfileCommandBase
 {
     private readonly ICountryService _countryService;
 
-    protected ProfileViewModelValidator(ICountryService countryService)
+    protected UserProfileAbstractValidator(ICountryService countryService)
     {
         _countryService = countryService;
 

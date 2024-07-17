@@ -1,8 +1,8 @@
 using FluentValidation;
 
-namespace CarRentalSystem.Web.ViewModels.Validators;
+namespace CarRentalSystem.Core.ApplicationUsers.ValidatorsExtension;
 
-public static class PasswordValidatorExtensions
+public static class PasswordValidatorsExtension
 {
     public static IRuleBuilderOptions<T, string> StrongPassword<T>(this IRuleBuilder<T, string> ruleBuilder)
     {

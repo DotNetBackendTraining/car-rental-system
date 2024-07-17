@@ -1,10 +1,11 @@
+using CarRentalSystem.Core.ApplicationUsers.ValidatorsExtension;
 using FluentValidation;
 
-namespace CarRentalSystem.Web.ViewModels.Validators;
+namespace CarRentalSystem.Core.ApplicationUsers.Commands.ResetPassword;
 
-public class ResetPasswordViewModelValidator : AbstractValidator<ResetPasswordViewModel>
+public class ResetPasswordCommandValidator : AbstractValidator<ResetPasswordCommand>
 {
-    public ResetPasswordViewModelValidator()
+    public ResetPasswordCommandValidator()
     {
         RuleFor(x => x.UserId)
             .NotEmpty().WithMessage("User ID is required.");

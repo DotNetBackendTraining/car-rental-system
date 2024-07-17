@@ -1,11 +1,11 @@
 using FluentValidation;
 
-namespace CarRentalSystem.Web.ViewModels.Validators;
+namespace CarRentalSystem.Core.ApplicationUsers.Commands;
 
-public abstract class UserBaseViewModelValidator<T> : PasswordFieldViewModelValidator<T>
-    where T : UserBaseViewModel
+public class UserCredentialsAbstractValidator<T> : AbstractValidator<T>
+    where T : UserCredentialsCommandBase
 {
-    protected UserBaseViewModelValidator()
+    public UserCredentialsAbstractValidator()
     {
         RuleFor(x => x.Email)
             .NotEmpty().WithMessage("Email is required.")
