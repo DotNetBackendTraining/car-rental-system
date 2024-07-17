@@ -1,30 +1,35 @@
+using AutoMapper;
+using CarRentalSystem.Core.ApplicationUsers.Commands.ConfirmEmail;
+using CarRentalSystem.Core.ApplicationUsers.Commands.ForgotPassword;
+using CarRentalSystem.Core.ApplicationUsers.Commands.LoginUser;
+using CarRentalSystem.Core.ApplicationUsers.Commands.LogoutUserCommand;
+using CarRentalSystem.Core.ApplicationUsers.Commands.RegisterUser;
+using CarRentalSystem.Core.ApplicationUsers.Commands.ResetPassword;
+using CarRentalSystem.Core.ApplicationUsers.Commands.UpdateUser;
+using CarRentalSystem.Core.ApplicationUsers.Queries.CurrentUserQuery;
 using CarRentalSystem.Core.Interfaces;
-using CarRentalSystem.Web.Filters;
-using CarRentalSystem.Web.Interfaces;
 using CarRentalSystem.Web.ViewModels;
+using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace CarRentalSystem.Web.Controllers;
 
-public class AccountController : Controller
+public class AccountController : AbstractController
 {
+    private readonly IMapper _mapper;
+    private readonly ISender _sender;
     private readonly ICountryService _countryService;
-    private readonly IUserLoginService _userLoginService;
-    private readonly IUserProfileService _userProfileService;
-    private readonly IUserRegistrationService _userRegistrationService;
 
     public AccountController(
-        ICountryService countryService,
-        IUserLoginService userLoginService,
-        IUserProfileService userProfileService,
-        IUserRegistrationService userRegistrationService)
+        IMapper mapper,
+        ISender sender,
+        ICountryService countryService)
     {
+        _mapper = mapper;
+        _sender = sender;
         _countryService = countryService;
-        _userLoginService = userLoginService;
-        _userProfileService = userProfileService;
-        _userRegistrationService = userRegistrationService;
     }
 
     public override void OnActionExecuting(ActionExecutingContext context)
@@ -41,25 +46,16 @@ public class AccountController : Controller
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    [ServiceFilter(typeof(ValidationFilter<RegisterViewModel>))]
     public async Task<IActionResult> Register(RegisterViewModel model)
     {
-        if (!ModelState.IsValid)
-        {
-            return View(model);
-        }
-
-        var result = await _userRegistrationService.RegisterUserAsync(model);
-        if (result.Succeeded)
+        var registerUserCommand = _mapper.Map<RegisterUserCommand>(model);
+        var result = await _sender.Send(registerUserCommand);
+        if (result.IsSuccess)
         {
             return RedirectToAction("Index", "Home");
         }
 
-        foreach (var error in result.Errors)
-        {
-            ModelState.AddModelError(string.Empty, error.Description);
-        }
-
+        HandleErrors(result);
         return View(model);
     }
 
@@ -71,21 +67,16 @@ public class AccountController : Controller
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    [ServiceFilter(typeof(ValidationFilter<LoginViewModel>))]
     public async Task<IActionResult> Login(LoginViewModel model)
     {
-        if (!ModelState.IsValid)
-        {
-            return View(model);
-        }
-
-        var result = await _userLoginService.LoginUserAsync(model);
-        if (result.Succeeded)
+        var loginUserCommand = _mapper.Map<LoginUserCommand>(model);
+        var result = await _sender.Send(loginUserCommand);
+        if (result.IsSuccess)
         {
             return RedirectToAction("Index", "Find");
         }
 
-        ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+        HandleErrors(result);
         return View(model);
     }
 
@@ -93,7 +84,7 @@ public class AccountController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Logout()
     {
-        await _userLoginService.LogoutUserAsync();
+        await _sender.Send(new LogoutUserCommand());
         return RedirectToAction("Index", "Home");
     }
 
@@ -101,32 +92,30 @@ public class AccountController : Controller
     [Authorize]
     public async Task<IActionResult> UpdateProfile()
     {
-        var userProfile = await _userProfileService.GetCurrentUserProfileAsync();
-        return View(userProfile);
+        var result = await _sender.Send(new CurrentUserQuery());
+        if (result.IsFailure)
+        {
+            HandleErrors(result);
+            return View();
+        }
+
+        var profileViewModel = _mapper.Map<ProfileViewModel>(result.Value);
+        return View(profileViewModel);
     }
 
     [HttpPost]
     [Authorize]
     [ValidateAntiForgeryToken]
-    [ServiceFilter(typeof(ValidationFilter<ProfileViewModel>))]
     public async Task<IActionResult> UpdateProfile(ProfileViewModel model)
     {
-        if (!ModelState.IsValid)
-        {
-            return View(model);
-        }
-
-        var result = await _userProfileService.UpdateCurrentUserProfileAsync(model);
-        if (result.Succeeded)
+        var updateUserProfileCommand = _mapper.Map<UpdateUserCommand>(model);
+        var result = await _sender.Send(updateUserProfileCommand);
+        if (result.IsSuccess)
         {
             return RedirectToAction("UpdateProfile", "Account");
         }
 
-        foreach (var error in result.Errors)
-        {
-            ModelState.AddModelError(string.Empty, error.Description);
-        }
-
+        HandleErrors(result);
         return View(model);
     }
 
@@ -138,12 +127,19 @@ public class AccountController : Controller
             return RedirectToAction("Index", "Home");
         }
 
-        var result = await _userRegistrationService.ConfirmUserEmailAsync(userId, token);
-        if (result.Succeeded)
+        var confirmEmailCommand = new ConfirmEmailCommand
+        {
+            UserId = userId,
+            Token = token
+        };
+
+        var result = await _sender.Send(confirmEmailCommand);
+        if (result.IsSuccess)
         {
             return RedirectToAction("Index", "Home");
         }
 
+        HandleErrors(result);
         return View("Error");
     }
 
@@ -157,13 +153,15 @@ public class AccountController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> ForgotPassword(ForgotPasswordViewModel model)
     {
-        if (!ModelState.IsValid)
+        var resetPasswordCommand = _mapper.Map<ForgotPasswordCommand>(model);
+        var result = await _sender.Send(resetPasswordCommand);
+        if (result.IsSuccess)
         {
-            return View(model);
+            return RedirectToAction("ForgotPasswordConfirmation");
         }
 
-        await _userRegistrationService.InitiateUserPasswordResetAsync(model);
-        return RedirectToAction("ForgotPasswordConfirmation");
+        HandleErrors(result);
+        return View("Error");
     }
 
     [HttpGet]
@@ -192,22 +190,14 @@ public class AccountController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> ResetPassword(ResetPasswordViewModel model)
     {
-        if (!ModelState.IsValid)
-        {
-            return View(model);
-        }
-
-        var result = await _userRegistrationService.ResetUserPasswordAsync(model);
-        if (result.Succeeded)
+        var resetPasswordCommand = _mapper.Map<ResetPasswordCommand>(model);
+        var result = await _sender.Send(resetPasswordCommand);
+        if (result.IsSuccess)
         {
             return RedirectToAction("ResetPasswordConfirmation");
         }
 
-        foreach (var error in result.Errors)
-        {
-            ModelState.AddModelError(string.Empty, error.Description);
-        }
-
+        HandleErrors(result);
         return View(model);
     }
 

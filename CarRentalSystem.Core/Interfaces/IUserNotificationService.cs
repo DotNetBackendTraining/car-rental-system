@@ -1,4 +1,4 @@
-using CarRentalSystem.Core.Models;
+using CarRentalSystem.Core.Shared;
 
 namespace CarRentalSystem.Core.Interfaces;
 

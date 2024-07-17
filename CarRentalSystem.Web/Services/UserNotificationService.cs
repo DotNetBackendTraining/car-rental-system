@@ -1,6 +1,6 @@
 using System.Text.Json;
 using CarRentalSystem.Core.Interfaces;
-using CarRentalSystem.Core.Models;
+using CarRentalSystem.Core.Shared;
 using MediatR;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 

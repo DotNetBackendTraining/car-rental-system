@@ -1,10 +1,7 @@
 using System.Reflection;
+using CarRentalSystem.Core;
 using CarRentalSystem.Core.Interfaces;
-using CarRentalSystem.Core.Models;
-using CarRentalSystem.Web.Filters;
-using CarRentalSystem.Web.Profiles;
 using CarRentalSystem.Web.Services;
-using CarRentalSystem.Web.ViewModels.Validators;
 using FluentValidation;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 
@@ -14,16 +11,16 @@ public static class PresentationServiceCollectionExtension
 {
     public static void AddPresentationServices(this IServiceCollection services)
     {
-        services.AddAutoMapper(Assembly.GetAssembly(typeof(ApplicationUserProfile)));
+        services.AddAutoMapper(AssemblyReference.Assembly);
+        services.AddAutoMapper(Assembly.GetExecutingAssembly());
 
         services.AddMediatR(config =>
         {
+            config.RegisterServicesFromAssembly(AssemblyReference.Assembly);
             config.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly());
-            config.RegisterServicesFromAssemblyContaining<UserNotification>();
         });
 
-        services.AddValidatorsFromAssemblyContaining<RegisterViewModelValidator>();
-        services.AddScoped(typeof(ValidationFilter<>));
+        services.AddValidatorsFromAssembly(AssemblyReference.Assembly);
 
         services.AddScoped<IUserNotificationService, UserNotificationService>();
         services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
