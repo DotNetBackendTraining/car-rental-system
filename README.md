@@ -1,5 +1,31 @@
 # Car Rental System
 
+## **Introduction**
+
+The Car Rental web application helps users for renting vehicles. The application will include three main pages: Sign Up,
+Sign In, and the Main Page. These pages will be developed using ASP .NET Core to ensure efficient functionality and an
+engaging user interface.
+
+### **Scope**
+
+The system will cover the small part of car rental like user sign up, sign and car search to booking.
+
+### **User Roles**
+
+1. *Customer*: Users looking to rent cars.
+2. *Admin*: System administrators responsible for managing inventory, reservations, and users. it’s additional here when
+   you have free time just mention it here to have good clue about the system
+
+## **Showcase**
+
+### **Home Page**
+
+![Home Page](assets/home.png)
+
+### **Registration Page**
+
+![Registration Page](assets/register.png)
+
 ## **Development**
 
 1. Fill in SMTP provider settings in `appsettings.Development.json`. An easy way is to
@@ -11,22 +37,6 @@
     ```
    The program ensures the database is created and migrated automatically. But if you want to migrate it manually run
    the database separately first. The right connection string can be found in the `appsettings.json` file.
-
-## **Introduction**
-
-The Car Rental web application helps users for renting vehicles. The application will include three main pages: Sign Up,
-Sign In, and the Main Page. These pages will be developed using ASP .NET Core to ensure efficient functionality and an
-engaging user interface.
-
-## **Scope**
-
-The system will cover the small part of car rental like user sign up, sign and car search to booking.
-
-## **User Roles**
-
-1. *Customer*: Users looking to rent cars.
-2. *Admin*: System administrators responsible for managing inventory, reservations, and users. it’s additional here when
-   you have free time just mention it here to have good clue about the system
 
 ## **Features**
 
